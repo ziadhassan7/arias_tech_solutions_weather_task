@@ -4,24 +4,27 @@ import '../../../../core/styles/default_padding.dart';
 
 
 class InputField extends StatefulWidget {
-  final String title;
+  final String? title;
   final String hint;
   final TextEditingController controller;
   final GlobalKey<FormState>? formKey;
   final String? Function(String?)? validator;
   TextInputType? inputType;
   final bool disablePadding;
-  final Widget? suffixIcon;
+  final bool filled;
+  final Widget? prefixIcon;
 
   InputField(
-      {required this.title,
+      {
+      this.title,
       required this.hint,
       required this.controller,
       this.inputType,
       this.formKey,
       this.validator,
       this.disablePadding = false,
-      this.suffixIcon,
+      this.filled = false,
+      this.prefixIcon,
       super.key});
 
   static final FocusNode myFocusNode = FocusNode();
@@ -70,9 +73,12 @@ class _InputFieldState extends State<InputField> {
 
           contentPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
 
-          suffixIcon: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: widget.suffixIcon),
+          prefixIcon: Opacity(
+            opacity: 0.4,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 8),
+                child: widget.prefixIcon),
+          ),
 
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(50)),
@@ -86,10 +92,10 @@ class _InputFieldState extends State<InputField> {
             borderRadius: const BorderRadius.all(Radius.circular(50)),
             borderSide: BorderSide(width: 1,color: unFocusedColor),
           ),
-          filled: false,
+          filled: widget.filled,
           hintStyle: TextStyle(color: unFocusedColor, fontFamily: 'urbanist', fontSize: 16),
           hintText: widget.hint,
-          label: Text(widget.title,),
+          label: widget.title != null ? Text(widget.title!,) : null,
           labelStyle: TextStyle(
               color: focusedColor, fontFamily: 'urbanist'
           ),
