@@ -3,12 +3,13 @@ import '../../core/app_screen.dart';
 import '../../core/styles/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.onPressed, required this.child, this.prefixIcon, this.color,});
+  const CustomButton({super.key, required this.onPressed, required this.child, this.prefixIcon, this.color, this.transparentColor = false,});
 
   final Function()? onPressed;
   final Widget child;
   final Widget? prefixIcon;
   final Color? color;
+  final bool transparentColor;
 
 
   @override
@@ -20,8 +21,8 @@ class CustomButton extends StatelessWidget {
 
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            foregroundColor: AppColors.textColor.withValues(alpha: 0.4),
-            backgroundColor: AppColors.button,
+            foregroundColor: transparentColor ? AppColors.textColor.withValues(alpha: 0.4): AppColors.primaryColor,
+            backgroundColor: transparentColor ? AppColors.dimButton : AppColors.button,
             textStyle: buttonTextStyle(),
           ),
 

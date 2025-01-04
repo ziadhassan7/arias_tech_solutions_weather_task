@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'features/weather/presentation/home_page/screens/home_page.dart';
+import 'home_page.dart';
 import 'injection.dart' as inject;
 
 Future<void> main() async {
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
               error: Colors.red)
       ),
 
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }

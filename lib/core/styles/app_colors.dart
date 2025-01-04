@@ -14,7 +14,8 @@ class AppColors {
 
   static const Color primaryColor = Colors.white;
 
-  static const Color button = Color.fromRGBO(18, 39, 68, 0.4);
+  static const Color button = Color.fromRGBO(10, 79, 179, 1.0);
+  static const Color dimButton = Color.fromRGBO(18, 39, 68, 0.4);
 
   static Color textFieldUnFocusedColor = AppColors.textColorHint.withValues(alpha: 0.4);
   static Color textFieldFocusedColor = AppColors.textColorHint.withValues(alpha: 0.6);

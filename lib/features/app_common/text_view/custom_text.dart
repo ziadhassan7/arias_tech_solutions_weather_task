@@ -13,6 +13,7 @@ class TextView extends StatelessWidget {
   final TextDirection? textDirection;
   final double scale;
   final TextDecoration? decoration;
+  final double? opacity;
 
   const TextView(
       this.text,
@@ -27,27 +28,33 @@ class TextView extends StatelessWidget {
         this.textAlign = TextAlign.start,
         this.textDirection,
         this.scale = 1,
-        this.decoration
+        this.decoration,
+        this.opacity,
+
       }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
+    return Opacity(
+      opacity: opacity ?? 1,
 
-      textAlign: textAlign,
-      maxLines: maxLine,
-      softWrap: softWrap,
-      textDirection: textDirection,
-      overflow: overflow,
+      child: Text(
+        text,
 
-      style: getTheme(
-        size: (size!=null)? size!*scale : size,
-        weight: weight,
-        color: color,
-        decoration: decoration
+        textAlign: textAlign,
+        maxLines: maxLine,
+        softWrap: softWrap,
+        textDirection: textDirection,
+        overflow: overflow,
+
+        style: getTheme(
+          size: (size!=null)? size!*scale : size,
+          weight: weight,
+          color: color,
+          decoration: decoration
+        ),
+
       ),
-
     );
   }
 

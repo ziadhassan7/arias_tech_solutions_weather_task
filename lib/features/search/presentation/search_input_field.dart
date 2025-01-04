@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../app_common/input_field.dart';
+import '../../app_common/input_field.dart';
 
 class SearchInputField extends StatelessWidget {
   const SearchInputField({super.key});
