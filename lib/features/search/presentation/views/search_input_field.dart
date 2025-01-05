@@ -56,7 +56,7 @@ class _SearchInputField extends StatelessWidget {
           },
 
           onFieldSubmitted: (value){
-
+            openWeatherForSelectedAddress(context, address: value,);
           },
 
           onFieldUnfocused: (){
@@ -67,13 +67,7 @@ class _SearchInputField extends StatelessWidget {
 
 
         /// Auto Complete List (updates based on text input)
-        BlocConsumer<SearchFieldCubit, SearchFieldStates>(
-          listener: (context, state){
-            if(state is ErrorState){
-              NetworkUtil.handleNetworkError(context, state.error);
-            }
-          },
-
+        BlocBuilder<SearchFieldCubit, SearchFieldStates>(
           builder: (context, state){
             if(state is IdleState){
               return const SizedBox.shrink();
@@ -124,6 +118,8 @@ class _SearchInputField extends StatelessWidget {
     );
   }
 
+  //----------------------------------------------------------------------------
+
   Future<void> openWeatherForSelectedLocation(
     BuildContext context, {
     required String placeId,
@@ -140,7 +136,6 @@ class _SearchInputField extends StatelessWidget {
           WeatherInfoPage(
             cityName: cityName,
             latLong: latLong,
-            //cityName: data[index].format?.mainText,
           ),
           replace: searchFieldInWeatherPage,
         );
@@ -149,8 +144,36 @@ class _SearchInputField extends StatelessWidget {
       if(context.mounted) NetworkUtil.handleNetworkError(context, e);
       rethrow;
     }
-
   }
+
+
+  Future<void> openWeatherForSelectedAddress(
+    BuildContext context, {
+      required String address,
+    }) async {
+    try {
+      PlaceModel place = await PlaceRepo().getLatLongByAddress(address);
+
+      LatLong latLong = place.results!.first.geometry!.latLong!;
+
+      if (context.mounted) {
+        AppRouter.navigateTo(
+          context,
+          WeatherInfoPage(
+            cityName: place.results!.first.address!.first.longName,
+            latLong: latLong,
+          ),
+          replace: searchFieldInWeatherPage,
+        );
+      }
+    } on DioException catch (e){
+      if(context.mounted) NetworkUtil.handleNetworkError(context, e);
+      rethrow;
+    }
+  }
+
+
+  //----------------------------------------------------------------------------
 
   Widget _autoCompleteListContainer({required int itemCount, required Widget? Function(BuildContext, int) itemBuilder}){
     return Container(

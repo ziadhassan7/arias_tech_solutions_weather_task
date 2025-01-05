@@ -16,16 +16,43 @@ class PlaceModel {
 }
 
 class Results {
+  List<AddressComponents>? address;
   Geometry? geometry;
 
   Results({
     this.geometry,
+    this.address,
   });
 
   Results.fromJson(Map<String, dynamic> json) {
+    if (json['address_components'] != null) {
+      address = <AddressComponents>[];
+      json['address_components'].forEach((v) {
+        address!.add(AddressComponents.fromJson(v));
+      });
+    }
     geometry = json['geometry'] != null
         ? Geometry.fromJson(json['geometry'])
         : null;
+  }
+}
+
+class AddressComponents {
+  String? longName;
+  String? shortName;
+
+  AddressComponents({this.longName, this.shortName,});
+
+  AddressComponents.fromJson(Map<String, dynamic> json) {
+    longName = json['long_name'];
+    shortName = json['short_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['long_name'] = longName;
+    data['short_name'] = shortName;
+    return data;
   }
 }
 
