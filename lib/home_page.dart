@@ -22,9 +22,10 @@ class HomePage extends StatelessWidget {
               child: SvgPicture.asset('assets/app_logo/app_logo.svg'),
             ),
 
+
             const SearchInputField(),
 
-            const SizedBox(height: 4,),
+            const SizedBox(height: 8,),
 
             const GetCurrentLocationBtn(),
           ],

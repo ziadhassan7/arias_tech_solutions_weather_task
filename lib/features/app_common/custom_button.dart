@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
 
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            foregroundColor: transparentColor ? AppColors.textColor.withValues(alpha: 0.4): AppColors.primaryColor,
+            foregroundColor: transparentColor ? AppColors.textColor.withValues(alpha: 0.6): AppColors.primaryColor,
             backgroundColor: transparentColor ? AppColors.dimButton : AppColors.button,
             textStyle: buttonTextStyle(),
           ),
@@ -32,7 +32,7 @@ class CustomButton extends StatelessWidget {
               (prefixIcon == null)
                 ? const SizedBox.shrink()
                 : Opacity(
-                  opacity: 0.4,
+                  opacity: 0.6,
                   child: Padding(
                       padding: const EdgeInsets.only(right: 16, ),
                       child: prefixIcon,
