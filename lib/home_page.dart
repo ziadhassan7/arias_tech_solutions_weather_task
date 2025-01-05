@@ -1,5 +1,5 @@
 import 'package:arias_tech_solutions_weather_task/features/location/presentation/views/get_current_location_btn.dart';
-import 'package:arias_tech_solutions_weather_task/features/search/presentation/search_input_field.dart';
+import 'package:arias_tech_solutions_weather_task/features/search/presentation/views/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'features/app_common/scaffold_gradient.dart';

@@ -13,6 +13,7 @@ class InputField extends StatefulWidget {
   final bool disablePadding;
   final bool filled;
   final Widget? prefixIcon;
+  final void Function(String)? onChanged;
 
   InputField(
       {
@@ -25,6 +26,7 @@ class InputField extends StatefulWidget {
       this.disablePadding = false,
       this.filled = false,
       this.prefixIcon,
+      this.onChanged,
       super.key});
 
   static final FocusNode myFocusNode = FocusNode();
@@ -62,6 +64,8 @@ class _InputFieldState extends State<InputField> {
       key: widget.formKey,
 
       child: TextFormField(
+        onChanged: widget.onChanged,
+
         keyboardType: widget.inputType,
         controller: widget.controller,
         validator: widget.validator,

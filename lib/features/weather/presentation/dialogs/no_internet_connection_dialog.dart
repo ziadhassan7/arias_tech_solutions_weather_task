@@ -15,7 +15,7 @@ class NoInternetConnectionDialog extends StatelessWidget {
 
         const SizedBox(height: 4,),
 
-        const TextView("There is no internet connection!", size: 18, maxLine: 2,),
+        const TextView("There is no internet connection!", size: 18, maxLines: 2,),
         const TextView("Try opening your WiFi or mobile data.", opacity: 0.5, size: 12,),
 
         const SizedBox(height: 36,),

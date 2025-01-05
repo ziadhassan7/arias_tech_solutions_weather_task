@@ -17,8 +17,8 @@ class NoLocationDialog extends StatelessWidget {
 
         const SizedBox(height: 12,),
 
-        const TextView("Location Service Disabled", size: 18, maxLine: 2,),
-        const TextView("Please enable location services to use this feature.", opacity: 0.5, size: 12, maxLine: 3,),
+        const TextView("Location Service Disabled", size: 18, maxLines: 2,),
+        const TextView("Please enable location services to use this feature.", opacity: 0.5, size: 12, maxLines: 3,),
 
         const SizedBox(height: 24,),
 

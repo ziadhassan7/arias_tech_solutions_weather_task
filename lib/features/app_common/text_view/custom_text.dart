@@ -6,7 +6,7 @@ class TextView extends StatelessWidget {
   final double? size;
   final FontWeight? weight;
   final Color? color;
-  final int? maxLine;
+  final int? maxLines;
   final bool? softWrap;
   final TextOverflow? overflow;
   final TextAlign? textAlign;
@@ -22,7 +22,7 @@ class TextView extends StatelessWidget {
         this.size,
         this.weight,
         this.color,
-        this.maxLine,
+        this.maxLines,
         this.softWrap,
         this.overflow = TextOverflow.ellipsis,
         this.textAlign = TextAlign.start,
@@ -42,7 +42,7 @@ class TextView extends StatelessWidget {
         text,
 
         textAlign: textAlign,
-        maxLines: maxLine,
+        maxLines: maxLines,
         softWrap: softWrap,
         textDirection: textDirection,
         overflow: overflow,
