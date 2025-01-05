@@ -36,7 +36,7 @@ class _WeatherInfoPage extends StatelessWidget {
       child: Stack(
         children: [
 
-          ///
+          /// Weather Info
           Padding(
             padding: const EdgeInsets.only(top: 140),
             child: BlocBuilder<WeatherInfoCubit, WeatherInfoStates>(

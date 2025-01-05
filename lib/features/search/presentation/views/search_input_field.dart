@@ -3,8 +3,8 @@ import 'package:arias_tech_solutions_weather_task/core/styles/box_decoration.dar
 import 'package:arias_tech_solutions_weather_task/features/app_common/text_view/custom_text.dart';
 import 'package:arias_tech_solutions_weather_task/features/location/data/models/latlong_model.dart';
 import 'package:arias_tech_solutions_weather_task/features/location/data/models/place_model.dart';
-import 'package:arias_tech_solutions_weather_task/features/location/data/place_repo.dart';
-import 'package:arias_tech_solutions_weather_task/features/search/data/remote/auto_complete_list_model.dart';
+import 'package:arias_tech_solutions_weather_task/features/location/data/repository/place_repo.dart';
+import 'package:arias_tech_solutions_weather_task/features/search/data/remote/models/auto_complete_list_model.dart';
 import 'package:arias_tech_solutions_weather_task/features/search/presentation/cubit/search_field_cubit.dart';
 import 'package:arias_tech_solutions_weather_task/features/search/presentation/cubit/search_field_states.dart';
 import 'package:arias_tech_solutions_weather_task/features/weather/presentation/screens/weather_info_page.dart';
@@ -60,17 +60,7 @@ class _SearchInputField extends StatelessWidget {
               return const SizedBox.shrink();
 
             } else if (state is InputFieldFocusedState){
-              return Container(
-                margin: const EdgeInsets.only(top: 16, bottom: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-
-                decoration: CustomDecoration(
-                  backgroundColor: Colors.white,
-                  radius: 24,
-                ),
-
-                child: ListView.builder(
-                  shrinkWrap: true,
+              return _autoCompleteListContainer(
                   itemCount: state.recentSearches.length,
                   itemBuilder: (context, index){
                     return Row(
@@ -79,36 +69,20 @@ class _SearchInputField extends StatelessWidget {
                       ],
                     );
                   }
-                ),
-              );
+                );
 
             } else if (state is InputFieldTypingState){
               List<Predictions> data = state.autoCompleteList;
 
-              return Container(
-                margin: const EdgeInsets.only(top: 16, bottom: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-
-                decoration: CustomDecoration(
-                  backgroundColor: Colors.white,
-                  radius: 24,
-                ),
-
-                child: ListView.builder(
-                  shrinkWrap: true,
+              return _autoCompleteListContainer(
                   itemCount: data.length,
                   itemBuilder: (context, index){
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: SvgPicture.asset('assets/icons/send.svg'),
-                      title: TextView(
-                        data[index].format?.mainText ?? data[index].description!,
-                        maxLines: 1,
-                      ),
-                      subtitle: TextView(
-                        data[index].format?.secondaryText ?? "",
-                        color: Colors.grey, maxLines: 1,
-                      ),
+                    String title = data[index].format?.mainText ?? data[index].description!;
+                    String subtitle = data[index].format?.secondaryText ?? "";
+
+                    return autoCompleteListTile(
+                      title: title,
+                      subtitle: subtitle,
                       onTap: () async {
 
                         PlaceModel place = await PlaceRepo().getLatLongByPlaceId(data[index].placeId!);
@@ -117,28 +91,66 @@ class _SearchInputField extends StatelessWidget {
 
                         if(context.mounted){
                           AppRouter.navigateTo(context,
-                              WeatherInfoPage(
-                                cityName: data[index].description!,
-                                latLong: latLong,
-                                //cityName: data[index].format?.mainText,
-                              ),
+                            WeatherInfoPage(
+                              cityName: data[index].description!,
+                              latLong: latLong,
+                              //cityName: data[index].format?.mainText,
+                            ),
 
                             replace: searchFieldInWeatherPage,
                           );
                         }
 
                       }
-
                     );
                   }
-                ),
-              );
+                );
             }
 
             return const SizedBox.shrink();
           }
         )
       ],
+    );
+  }
+
+  Widget _autoCompleteListContainer({required int itemCount, required Widget? Function(BuildContext, int) itemBuilder}){
+    return Container(
+      margin: const EdgeInsets.only(top: 16, bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+
+      decoration: CustomDecoration(
+        backgroundColor: Colors.white,
+        radius: 24,
+      ),
+
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder
+      )
+    );
+  }
+
+  Widget autoCompleteListTile({
+    required String title,
+    required String subtitle,
+    required void Function()? onTap
+  }){
+
+    return ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: SvgPicture.asset('assets/icons/send.svg'),
+        title: TextView(
+          title,
+          maxLines: 1,
+        ),
+        subtitle: TextView(
+          subtitle,
+          color: Colors.grey, maxLines: 1,
+        ),
+        onTap: onTap,
+
     );
   }
 }

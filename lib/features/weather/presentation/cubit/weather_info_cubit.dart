@@ -21,9 +21,7 @@ class WeatherInfoCubit extends Cubit<WeatherInfoStates>{
 
     try {
 
-      WeatherModel data = await WeatherRepo().getWeatherByLatLong(
-        latLong,
-      );
+      WeatherModel data = await WeatherRepo().getWeatherByLatLong(latLong);
 
       emit(SuccessState(data: data));
 

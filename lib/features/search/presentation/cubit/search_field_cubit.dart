@@ -1,8 +1,8 @@
 import 'package:arias_tech_solutions_weather_task/features/search/data/local/search_pref.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/remote/auto_complete_list_model.dart';
-import '../../data/remote/auto_complete_repo.dart';
+import '../../data/remote/models/auto_complete_list_model.dart';
+import '../../data/remote/repositories/auto_complete_repo.dart';
 import 'search_field_states.dart';
 
 

@@ -1,4 +1,4 @@
-import 'package:arias_tech_solutions_weather_task/features/search/data/remote/auto_complete_list_model.dart';
+import 'package:arias_tech_solutions_weather_task/features/search/data/remote/models/auto_complete_list_model.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 

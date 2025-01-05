@@ -2,7 +2,7 @@ import 'package:arias_tech_solutions_weather_task/core/api_provider/api_provider
 import 'package:arias_tech_solutions_weather_task/core/dotenv/dotenv_client.dart';
 import 'package:arias_tech_solutions_weather_task/features/location/data/models/place_model.dart';
 import 'package:dio/dio.dart';
-import '../../../../core/custom_log.dart';
+import '../../../../../core/custom_log.dart';
 
 
 class PlaceRepo {
@@ -24,6 +24,24 @@ class PlaceRepo {
 
     } on DioException catch(e){
       Log('getLatLongByPlaceId - Error', e.response);
+      rethrow;
+    }
+  }
+
+  Future<PlaceModel> getLatLongByAddress(String address) async {
+    try{
+      Response response = await _dio.get(
+          'geocode/json',
+          queryParameters: {
+            'address': address,
+            'key': DotEnvClient.mapKey
+          }
+      );
+
+      return PlaceModel.fromJson(response.data);
+
+    } on DioException catch(e){
+      Log('getLatLongByAddress - Error', e.response);
       rethrow;
     }
   }

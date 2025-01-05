@@ -16,7 +16,7 @@ class WeatherRepo {
           queryParameters: {
             'lat': latLong.lat,
             'lon': latLong.long,
-            'units': 'metric',
+            'units': 'metric', //celsius degrees
             'appid': DotEnvClient.weatherKey
           }
       );

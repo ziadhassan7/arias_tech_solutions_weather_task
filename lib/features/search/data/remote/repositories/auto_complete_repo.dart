@@ -1,8 +1,8 @@
 import 'package:arias_tech_solutions_weather_task/core/api_provider/api_provider.dart';
 import 'package:arias_tech_solutions_weather_task/core/dotenv/dotenv_client.dart';
 import 'package:dio/dio.dart';
-import '../../../../core/custom_log.dart';
-import 'auto_complete_list_model.dart';
+import '../../../../../core/custom_log.dart';
+import '../models/auto_complete_list_model.dart';
 
 class SearchRepo {
 
