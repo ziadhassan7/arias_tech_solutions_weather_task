@@ -24,12 +24,14 @@ class WeatherView extends StatelessWidget {
 
                   const SizedBox(width: 24,),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextView(cityName ?? '', size: 18, color: AppColors.textColor,),
-                      TextView('${data.current!.temp!.round()}°C', size: 60, color: AppColors.textColor),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextView(cityName ?? '', size: 18, color: AppColors.textColor,),
+                        TextView('${data.current!.temp!.round()}°C', size: 60, color: AppColors.textColor),
+                      ],
+                    ),
                   )
                 ],),
               ],
@@ -66,6 +68,7 @@ class WeatherView extends StatelessWidget {
     );
   }
 
+  // Get forecast days from list index counter
   String getDayFromIndex(int index) {
     // Days of the week starting from Sunday
     const daysOfWeek = [
@@ -91,6 +94,8 @@ class WeatherView extends StatelessWidget {
     return daysOfWeek[followingDay];
   }
 
+
+  // Get corresponding weather icon from API weather keys
   Widget getWeatherIcon(String weatherCode){
 
     switch(weatherCode){
