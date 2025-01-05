@@ -14,20 +14,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../app_common/input_field.dart';
 
 class SearchInputField extends StatelessWidget {
-  const SearchInputField({super.key});
+  const SearchInputField({super.key, this.searchFieldInWeatherPage = false});
+
+  final bool searchFieldInWeatherPage;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_)=> SearchFieldCubit(),
-      child: const _SearchInputField());
+      child: _SearchInputField(searchFieldInWeatherPage));
   }
 }
 
 
 class _SearchInputField extends StatelessWidget {
-  const _SearchInputField();
+  const _SearchInputField(this.searchFieldInWeatherPage);
 
+  final bool searchFieldInWeatherPage;
   static final TextEditingController searchController = TextEditingController();
 
   @override
@@ -115,9 +118,12 @@ class _SearchInputField extends StatelessWidget {
                         if(context.mounted){
                           AppRouter.navigateTo(context,
                               WeatherInfoPage(
+                                cityName: data[index].description!,
                                 latLong: latLong,
                                 //cityName: data[index].format?.mainText,
-                              )
+                              ),
+
+                            replace: searchFieldInWeatherPage,
                           );
                         }
 
