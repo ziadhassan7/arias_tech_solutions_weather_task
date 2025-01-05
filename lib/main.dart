@@ -18,23 +18,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Arias Weather',
-      debugShowCheckedModeBanner: false,
+    return GestureDetector(
+      onTap: () {
+        ///Remove focus from input fields once the user pressed outside the input area
+        ///`Mandatory` for IOS cause there's no back button to hide keyboard.
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
 
-      theme: ThemeData(
-          colorScheme: const ColorScheme.light(
-              primary: Colors.black54,
-              primaryContainer: Colors.white,
-              onPrimaryContainer: Colors.white,
-              secondaryContainer: Colors.white,
-              onSecondaryContainer: Colors.white,
-              tertiaryContainer: Colors.white,
-              onTertiaryContainer: Colors.white,
-              error: Colors.red)
+      child: MaterialApp(
+        title: 'Arias Weather',
+        debugShowCheckedModeBanner: false,
+
+        theme: ThemeData(
+            colorScheme: const ColorScheme.light(
+                primary: Colors.black54,
+                primaryContainer: Colors.white,
+                onPrimaryContainer: Colors.white,
+                secondaryContainer: Colors.white,
+                onSecondaryContainer: Colors.white,
+                tertiaryContainer: Colors.white,
+                onTertiaryContainer: Colors.white,
+                error: Colors.red)
+        ),
+
+        home: HomePage(),
       ),
-
-      home: HomePage(),
     );
   }
 }

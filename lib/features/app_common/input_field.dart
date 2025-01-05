@@ -14,6 +14,8 @@ class InputField extends StatefulWidget {
   final bool filled;
   final Widget? prefixIcon;
   final void Function(String)? onChanged;
+  final void Function(String)? onFieldSubmitted;
+  final void Function()? onFieldUnfocused;
 
   InputField(
       {
@@ -27,6 +29,8 @@ class InputField extends StatefulWidget {
       this.filled = false,
       this.prefixIcon,
       this.onChanged,
+      this.onFieldSubmitted,
+      this.onFieldUnfocused,
       super.key});
 
   static final FocusNode myFocusNode = FocusNode();
@@ -37,10 +41,28 @@ class InputField extends StatefulWidget {
 
 class _InputFieldState extends State<InputField> {
 
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+
+    // Add a listener to the FocusNode
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        // This block runs when the field loses focus
+        print("Input field lost focus!");
+        if(widget.onFieldUnfocused != null) widget.onFieldUnfocused!();
+      }
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
     widget.controller.clear();
+    _focusNode.dispose();
   }
 
   @override
@@ -64,7 +86,9 @@ class _InputFieldState extends State<InputField> {
       key: widget.formKey,
 
       child: TextFormField(
+        focusNode: _focusNode,
         onChanged: widget.onChanged,
+        onFieldSubmitted: widget.onFieldSubmitted,
 
         keyboardType: widget.inputType,
         controller: widget.controller,

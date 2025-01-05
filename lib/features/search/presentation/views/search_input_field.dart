@@ -37,6 +37,8 @@ class _SearchInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+
+        /// Text Input Field
         InputField(
           controller: searchController,
           hint: 'Search by city name',
@@ -45,12 +47,24 @@ class _SearchInputField extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: SvgPicture.asset('assets/icons/search.svg',),
           ),
+
           onChanged: (inputText){
             context.read<SearchFieldCubit>()
                 .listSearchSuggestions(searchInput: inputText);
-            },
+          },
+
+          onFieldSubmitted: (value){
+
+          },
+
+          onFieldUnfocused: (){
+            // Close suggestions list when losing focus of input field
+            context.read<SearchFieldCubit>().closeList();
+          },
         ),
 
+
+        /// Auto Complete List (updates based on text input)
         BlocBuilder<SearchFieldCubit, SearchFieldStates>(
           builder: (context, state){
             if(state is IdleState){

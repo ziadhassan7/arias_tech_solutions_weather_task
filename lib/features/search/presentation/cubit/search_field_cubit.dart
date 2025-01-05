@@ -10,6 +10,9 @@ class SearchFieldCubit extends Cubit<SearchFieldStates>{
   SearchFieldCubit() : super(IdleState());
 
 
+  closeList()=> emit(IdleState());
+
+
   showRecentSearches(){
     List<String>? recentSearchItems = SearchPref.getAllSearchHistory();
 
