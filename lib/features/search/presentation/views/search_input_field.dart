@@ -4,6 +4,7 @@ import 'package:arias_tech_solutions_weather_task/features/app_common/text_view/
 import 'package:arias_tech_solutions_weather_task/features/location/data/models/latlong_model.dart';
 import 'package:arias_tech_solutions_weather_task/features/location/data/models/place_model.dart';
 import 'package:arias_tech_solutions_weather_task/features/location/data/repository/place_repo.dart';
+import 'package:arias_tech_solutions_weather_task/features/search/data/local/search_pref.dart';
 import 'package:arias_tech_solutions_weather_task/features/search/data/remote/models/auto_complete_list_model.dart';
 import 'package:arias_tech_solutions_weather_task/features/search/presentation/cubit/search_field_cubit.dart';
 import 'package:arias_tech_solutions_weather_task/features/search/presentation/cubit/search_field_states.dart';
@@ -59,6 +60,11 @@ class _SearchInputField extends StatelessWidget {
             openWeatherForSelectedAddress(context, address: value,);
           },
 
+          onFieldFocused: (){
+            // Close suggestions list when losing focus of input field
+            context.read<SearchFieldCubit>().showRecentSearches();
+          },
+
           onFieldUnfocused: (){
             // Close suggestions list when losing focus of input field
             context.read<SearchFieldCubit>().closeList();
@@ -75,18 +81,27 @@ class _SearchInputField extends StatelessWidget {
             } else if (state is LoadingState) {
               return const SizedBox.shrink();
 
+            // When the field is Focused => Show Recent Searches
             } else if (state is InputFieldFocusedState){
+              List<String> recentSearchesDescendingOrder = state.recentSearches.reversed.take(10).toList();
+
               return _autoCompleteListContainer(
-                  itemCount: state.recentSearches.length,
+                  itemCount: recentSearchesDescendingOrder.length,
                   itemBuilder: (context, index){
-                    return Row(
-                      children: [
-                        TextView(state.recentSearches[index]),
-                      ],
+                    return ListTile(
+                      leading: const Icon(Icons.history),
+                      title: TextView(recentSearchesDescendingOrder[index]),
+                      onTap: (){
+                        openWeatherForSelectedAddress(
+                            context,
+                            address: recentSearchesDescendingOrder[index]
+                        );
+                      },
                     );
                   }
                 );
 
+            // When user is typing => Show Auto Complete Options
             } else if (state is InputFieldTypingState){
               List<Predictions> data = state.autoCompleteList;
 
@@ -125,6 +140,10 @@ class _SearchInputField extends StatelessWidget {
     required String placeId,
     required String cityName,
   }) async {
+    // add search item to search history
+    SearchPref.addSearchItem(cityName);
+
+    // Open weather page
     try {
       PlaceModel place = await PlaceRepo().getLatLongByPlaceId(placeId);
 
@@ -151,6 +170,11 @@ class _SearchInputField extends StatelessWidget {
     BuildContext context, {
       required String address,
     }) async {
+
+    // add search item to search history
+    SearchPref.addSearchItem(address);
+
+    // Open weather page
     try {
       PlaceModel place = await PlaceRepo().getLatLongByAddress(address);
 

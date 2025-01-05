@@ -13,7 +13,7 @@ class SearchPref {
     List<String> currentSearchHistory = getAllSearchHistory() ?? [];
 
     if(currentSearchHistory.contains(searchItem)){
-      //if it already exists, make it recent search, do not duplicate
+      //if it already exists, make it more recent search, DO NOT DUPLICATE
       currentSearchHistory.remove(searchItem);
       currentSearchHistory.add(searchItem);
 

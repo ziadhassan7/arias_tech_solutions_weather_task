@@ -15,6 +15,7 @@ class InputField extends StatefulWidget {
   final Widget? prefixIcon;
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
+  final void Function()? onFieldFocused;
   final void Function()? onFieldUnfocused;
 
   InputField(
@@ -30,6 +31,7 @@ class InputField extends StatefulWidget {
       this.prefixIcon,
       this.onChanged,
       this.onFieldSubmitted,
+      this.onFieldFocused,
       this.onFieldUnfocused,
       super.key});
 
@@ -50,9 +52,12 @@ class _InputFieldState extends State<InputField> {
 
     // Add a listener to the FocusNode
     _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        // This block runs when the field loses focus
-        print("Input field lost focus!");
+      // field has focus
+      if (_focusNode.hasFocus) {
+        if(widget.onFieldFocused != null) widget.onFieldFocused!();
+
+      // not focused
+      } else {
         if(widget.onFieldUnfocused != null) widget.onFieldUnfocused!();
       }
     });
