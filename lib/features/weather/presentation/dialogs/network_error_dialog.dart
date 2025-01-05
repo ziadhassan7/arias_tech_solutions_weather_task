@@ -2,8 +2,8 @@ import 'package:arias_tech_solutions_weather_task/features/app_common/custom_but
 import 'package:arias_tech_solutions_weather_task/features/app_common/text_view/custom_text.dart';
 import 'package:flutter/material.dart';
 
-class NoInternetConnectionDialog extends StatelessWidget {
-  const NoInternetConnectionDialog({super.key});
+class NetworkErrorDialog extends StatelessWidget {
+  const NetworkErrorDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,8 @@ import 'package:arias_tech_solutions_weather_task/features/weather/presentation/
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app_common/network_util.dart';
+
 class WeatherInfoPage extends StatelessWidget {
   const WeatherInfoPage({super.key, required this.latLong, this.cityName});
 
@@ -39,7 +41,13 @@ class _WeatherInfoPage extends StatelessWidget {
           /// Weather Info
           Padding(
             padding: const EdgeInsets.only(top: 140),
-            child: BlocBuilder<WeatherInfoCubit, WeatherInfoStates>(
+            child: BlocConsumer<WeatherInfoCubit, WeatherInfoStates>(
+              listener: (context, state){
+                if(state is ErrorState){
+                  NetworkUtil.handleNetworkError(context, state.error);
+                }
+              },
+
               builder: (context, state){
                 if(state is IdleState){
                   return const SizedBox.shrink();

@@ -8,10 +8,12 @@ import 'package:arias_tech_solutions_weather_task/features/search/data/remote/mo
 import 'package:arias_tech_solutions_weather_task/features/search/presentation/cubit/search_field_cubit.dart';
 import 'package:arias_tech_solutions_weather_task/features/search/presentation/cubit/search_field_states.dart';
 import 'package:arias_tech_solutions_weather_task/features/weather/presentation/screens/weather_info_page.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../app_common/input_field.dart';
+import '../../../app_common/network_util.dart';
 
 class SearchInputField extends StatelessWidget {
   const SearchInputField({super.key, this.searchFieldInWeatherPage = false});
@@ -65,7 +67,13 @@ class _SearchInputField extends StatelessWidget {
 
 
         /// Auto Complete List (updates based on text input)
-        BlocBuilder<SearchFieldCubit, SearchFieldStates>(
+        BlocConsumer<SearchFieldCubit, SearchFieldStates>(
+          listener: (context, state){
+            if(state is ErrorState){
+              NetworkUtil.handleNetworkError(context, state.error);
+            }
+          },
+
           builder: (context, state){
             if(state is IdleState){
               return const SizedBox.shrink();
@@ -97,24 +105,12 @@ class _SearchInputField extends StatelessWidget {
                     return autoCompleteListTile(
                       title: title,
                       subtitle: subtitle,
-                      onTap: () async {
-
-                        PlaceModel place = await PlaceRepo().getLatLongByPlaceId(data[index].placeId!);
-
-                        LatLong latLong = place.results!.first.geometry!.latLong!;
-
-                        if(context.mounted){
-                          AppRouter.navigateTo(context,
-                            WeatherInfoPage(
-                              cityName: data[index].description!,
-                              latLong: latLong,
-                              //cityName: data[index].format?.mainText,
-                            ),
-
-                            replace: searchFieldInWeatherPage,
-                          );
-                        }
-
+                      onTap: () {
+                        openWeatherForSelectedLocation(
+                          context,
+                          placeId: data[index].placeId!,
+                          cityName: data[index].description!
+                        );
                       }
                     );
                   }
@@ -126,6 +122,34 @@ class _SearchInputField extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Future<void> openWeatherForSelectedLocation(
+    BuildContext context, {
+    required String placeId,
+    required String cityName,
+  }) async {
+    try {
+      PlaceModel place = await PlaceRepo().getLatLongByPlaceId(placeId);
+
+      LatLong latLong = place.results!.first.geometry!.latLong!;
+
+      if (context.mounted) {
+        AppRouter.navigateTo(
+          context,
+          WeatherInfoPage(
+            cityName: cityName,
+            latLong: latLong,
+            //cityName: data[index].format?.mainText,
+          ),
+          replace: searchFieldInWeatherPage,
+        );
+      }
+    } on DioException catch (e){
+      if(context.mounted) NetworkUtil.handleNetworkError(context, e);
+      rethrow;
+    }
+
   }
 
   Widget _autoCompleteListContainer({required int itemCount, required Widget? Function(BuildContext, int) itemBuilder}){
